@@ -4,6 +4,7 @@
 /**/.settings/
 /**/target
 /**/bin
+/**/*.class
 
 # Visual Studio Generated
 .antlr
@@ -28,3 +29,5 @@
 # Ignore downloaded temporaries create by _scripts/get-antlr.ps1
 antlr4-*-complete.jar
 
+# Ignore parsed text file
+/**/*.txt

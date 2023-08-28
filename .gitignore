@@ -5,6 +5,8 @@
 /**/target
 /**/bin
 /**/*.class
+/**/*.java
+!/**/Demo.java
 
 # Visual Studio Generated
 .antlr
@@ -18,6 +20,7 @@
 *.iml
 /**/gen
 *.tokens
+/**/*.interp
 
 # Ignore C# regression temporaries.
 **/Generated*/

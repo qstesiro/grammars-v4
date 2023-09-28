@@ -58,10 +58,12 @@
 				<configuration>
 					<verbose>false</verbose>
 					<showTree>false</showTree>
+          <grammarName>Go</grammarName>
 					<entryPoint>sourceFile</entryPoint>
-					<grammarName>Go</grammarName>
 					<packageName></packageName>
 					<exampleFiles>examples/</exampleFiles>
+          <!-- <exampleFiles>examples/plugin/</exampleFiles> -->
+          <testFileExtension>.go</testFileExtension>
 				</configuration>
 				<executions>
 					<execution>

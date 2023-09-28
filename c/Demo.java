@@ -57,94 +57,18 @@ public class Demo {
                 }
             }
         }
+
+        @Override
+        public void enterStructOrUnionSpecifier(CParser.StructOrUnionSpecifierContext context) {
+            CParser.StructOrUnionContext structOrUnion = context.structOrUnion();
+            TerminalNode identifier = context.Identifier();
+            if (structOrUnion != null && identifier != null) {
+                if (context.LeftBrace() != null && context.RightBrace() != null) {
+                    System.out.printf("type define: %s\n", identifier.getText());
+                } else {
+                    System.out.printf("type use: %s\n", identifier.getText());
+                }
+            }
+        }
     }
-
-    // static class Listener extends CBaseListener {
-
-    //     Stack<String> stack = new Stack<String>();
-
-    //     @Override
-    //     public void enterCompilationUnit(CParser.CompilationUnitContext context) {
-    //         stack.push("compilationUnit");
-    //     }
-
-    //     @Override
-    //     public void exitCompilationUnit(CParser.CompilationUnitContext context) {
-    //         stack.pop();
-    //     }
-
-    //     // ---
-
-    //     @Override
-    //     public void enterFunctionDefinition(CParser.FunctionDefinitionContext context) {
-    //         stack.push("functionDefinition");
-    //     }
-
-    //     @Override
-    //     public void exitFunctionDefinition(CParser.FunctionDefinitionContext context) {
-    //         stack.pop();
-    //     }
-
-    //     @Override
-    //     public void enterParameterDeclaration(CParser.ParameterDeclarationContext context) {
-    //         stack.push("parameterDeclaration");
-    //     }
-
-    //     @Override
-    //     public void exitParameterDeclaration(CParser.ParameterDeclarationContext context) {
-    //         stack.pop();
-    //     }
-
-    //     @Override
-    //     public void enterDirectDeclarator(CParser.DirectDeclaratorContext context) {
-    //         if (!stack.empty() && stack.peek().equals("functionDefinition")) {
-    //             TerminalNode identifier = context.Identifier();
-    //             if (identifier != null) {
-    //                 System.out.printf("function define: %s\n", identifier.getText());
-    //             }
-    //         }
-    //     }
-
-    //     @Override
-    //     public void exitDirectDeclarator(CParser.DirectDeclaratorContext context) {
-
-    //     }
-
-    //     // ---
-
-    //     @Override
-    //     public void enterExpression(CParser.ExpressionContext context) {
-    //         stack.push("expression");
-    //     }
-
-    //     @Override
-    //     public void exitExpression(CParser.ExpressionContext context) {
-    //         stack.pop();
-    //     }
-
-    //     @Override
-    //     public void enterArgumentExpressionList(CParser.ArgumentExpressionListContext context) {
-    //         stack.push("argumentExpressionList");
-    //     }
-
-    //     @Override
-    //     public void exitArgumentExpressionList(CParser.ArgumentExpressionListContext context) {
-    //         stack.pop();
-    //     }
-
-    //     @Override
-    //     public void enterPrimaryExpression(CParser.PrimaryExpressionContext context) {
-    //         if (!stack.empty() && stack.peek().equals("expression")) {
-    //             TerminalNode identifier = context.Identifier();
-    //             if (identifier != null) {
-    //                 System.out.printf("function invoke: %s\n", identifier.getText());
-    //             }
-    //         }
-    //     }
-
-    //     @Override
-    //     public void exitPrimaryExpression(CParser.PrimaryExpressionContext context) {
-
-    //     }
-    // }
 }

@@ -168,7 +168,8 @@ BIG_U_VALUE: '\\' 'U' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGI
 // String literals
 
 RAW_STRING_LIT         : '`' ~'`'*                      '`' -> mode(NLSEMI);
-INTERPRETED_STRING_LIT : '"' (~["\\] | ESCAPED_VALUE)*  '"' -> mode(NLSEMI);
+// INTERPRETED_STRING_LIT : '"' (~["\\] | ESCAPED_VALUE)*  '"' -> mode(NLSEMI);
+INTERPRETED_STRING_LIT : '"' (~('"' | '\\') | ESCAPED_VALUE)*  '"' -> mode(NLSEMI); // ???
 
 // Hidden tokens
 
@@ -177,14 +178,15 @@ COMMENT                : '/*' .*? '*/'      -> channel(HIDDEN);
 TERMINATOR             : [\r\n]+            -> channel(HIDDEN);
 LINE_COMMENT           : '//' ~[\r\n]*      -> channel(HIDDEN);
 
-fragment UNICODE_VALUE: ~[\r\n'] | LITTLE_U_VALUE | BIG_U_VALUE | ESCAPED_VALUE;
+// fragment UNICODE_VALUE: ~[\r\n'] | LITTLE_U_VALUE | BIG_U_VALUE | ESCAPED_VALUE;
+fragment UNICODE_VALUE: ~('\r' | '\n' | '\'') | LITTLE_U_VALUE | BIG_U_VALUE | ESCAPED_VALUE; // ???
 
 // Fragments
 
 fragment ESCAPED_VALUE
     : '\\' ('u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
            | 'U' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-           | [abfnrtv\\'"]
+           | ('a' | 'b' | 'f' | 'n' | 'r' | 't' | 'v' | '\\' | '\'' | '"') // | [abfnrtv\\'"] ???
            | OCTAL_DIGIT OCTAL_DIGIT OCTAL_DIGIT
            | 'x' HEX_DIGIT HEX_DIGIT)
     ;
@@ -514,7 +516,7 @@ WS_NLSEMI                     : [ \t]+             -> channel(HIDDEN);
 // Ignore any comments that only span one line
 COMMENT_NLSEMI                : '/*' ~[\r\n]*? '*/'      -> channel(HIDDEN);
 LINE_COMMENT_NLSEMI : '//' ~[\r\n]*      -> channel(HIDDEN);
-// Emit an EOS token for any newlines, semicolon, multiline comments or the EOF and 
+// Emit an EOS token for any newlines, semicolon, multiline comments or the EOF and
 //return to normal lexing
 EOS:              ([\r\n]+ | ';' | '/*' .*? '*/' | EOF)            -> mode(DEFAULT_MODE);
 // Did not find an EOS, so go back to normal lexing
